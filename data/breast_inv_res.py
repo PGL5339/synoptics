@@ -310,6 +310,11 @@ dcis_margin_within_2_mm = (
     "DCIS present within 0-2 mm of final margins"
 )
 
+dcis_exact_size = (
+    "Largest dimension of DCIS "
+    "in Millimeters (mm)"
+)
+
 def margin_location_field(
     label: str,
     key: str,
@@ -426,7 +431,7 @@ def number_of_foci(key_prefix: str):
                 "",
             ),
             "Cannot be determined": (
-                "Explain",
+                "Comment",
                 "",
             ),
         },
@@ -620,8 +625,6 @@ def tumor_characteristics(
                     conditional_radio_multiple(
             label=(
                 "Histologic Grade "
-                "(Nottingham Histologic Score) "
-                "(required only if applicable)"
             ),
             options=[
                 (
@@ -653,7 +656,7 @@ def tumor_characteristics(
                         ],
                         value_fields={
                             "Score cannot be determined": (
-                                "Explain",
+                                "Comment",
                                 "",
                             ),
                         },
@@ -680,7 +683,7 @@ def tumor_characteristics(
                         ],
                         value_fields={
                             "Score cannot be determined": (
-                                "Explain",
+                                "Comment",
                                 "",
                             ),
                         },
@@ -689,8 +692,7 @@ def tumor_characteristics(
 
                     conditional_value(
                         label=(
-                            "Mitotic Rate "
-                            "(see Table 1 in Note E)"
+                            "Mitotic Rate"
                         ),
                         options=[
                             "Score 1",
@@ -704,7 +706,7 @@ def tumor_characteristics(
                         ],
                         value_fields={
                             "Score cannot be determined": (
-                                "Explain",
+                                "Comment",
                                 "",
                             ),
                         },
@@ -725,7 +727,7 @@ def tumor_characteristics(
                         ],
                         value_fields={
                             "Score cannot be determined": (
-                                "Explain",
+                                "Comment",
                                 "",
                             ),
                         },
@@ -753,7 +755,7 @@ def tumor_characteristics(
                     " mm",
                 ),
                 tumor_size_cannot_be_determined: (
-                    "Explain",
+                    "Comment",
                     "",
                 ),
             },
@@ -781,7 +783,7 @@ def tumor_characteristics(
                             "",
                         ),
                         "Cannot be determined": (
-                            "Explain",
+                            "Comment",
                             "",
                         ),
                     },
@@ -843,7 +845,7 @@ def lymph_node_number_field(
                 "",
             ),
             "Cannot be determined": (
-                "Explain",
+                "Comment",
                 "",
             ),
         },
@@ -876,7 +878,7 @@ def lymph_node_measurement_field(
                 "",
             ),
             "Cannot be determined": (
-                "Explain",
+                "Comment",
                 "",
             ),
         },
@@ -921,7 +923,7 @@ def breast_biomarker_studies(
             options=[
                 ER_POSITIVE,
                 ER_LOW_POSITIVE,
-                "Negative",
+                "Negative, 0%",
                 "Cannot be determined",
             ],
             conditional_fields={
@@ -945,7 +947,7 @@ def breast_biomarker_studies(
                 ),
 
                 "Cannot be determined": text(
-                    label="Explain",
+                    label="Comment",
                     key=(
                         f"{key_prefix}_er_"
                         "cannot_be_determined"
@@ -959,7 +961,7 @@ def breast_biomarker_studies(
             label="Progesterone Receptor (PgR) Status",
             options=[
                 "Positive",
-                "Negative",
+                "Negative, 0%",
                 "Cannot be determined",
             ],
             conditional_fields={
@@ -984,7 +986,7 @@ def breast_biomarker_studies(
                 ),
 
                 "Cannot be determined": text(
-                    label="Explain",
+                    label="Comment",
                     key=(
                         f"{key_prefix}_pgr_"
                         "cannot_be_determined"
@@ -1011,6 +1013,7 @@ def breast_biomarker_studies(
             options=[
                 "Negative (not amplified)",
                 "Positive (amplified)",
+                "Do not include",
             ],
             key=f"{key_prefix}_her2_ish_status",
         ),
@@ -1018,16 +1021,16 @@ def breast_biomarker_studies(
         radio(
             label="Percentage of Ki-67 Positive Nuclei",
             options=[
-                "Favorable 1-10%",
-                "Borderline 11-20%",
-                "Unfavorable 21-30%",
-                "Unfavorable 31-40%",
-                "Unfavorable 41-50%",
-                "Unfavorable 51-60%",
-                "Unfavorable 61-70%",
-                "Unfavorable 71-80%",
-                "Unfavorable 81-90%",
-                "Unfavorable 91-100%",
+                "1-10%",
+                "11-20%",
+                "21-30%",
+                "31-40%",
+                "41-50%",
+                "51-60%",
+                "61-70%",
+                "71-80%",
+                "81-90%",
+                "91-100%",
             ],
             key=f"{key_prefix}_ki67_percentage",
         ),
@@ -1094,7 +1097,7 @@ SYNOPTIC = [
                         SIMILAR_TUMOR_FOCI,
                         DIFFERENT_TUMOR_FOCI,
                         "Other (specify)",
-                        "Cannot be determined (explain)",
+                        "Cannot be determined",
                     ],
                     conditional_fields={
                         SIMILAR_TUMOR_FOCI: tumor_characteristics(
@@ -1147,9 +1150,9 @@ SYNOPTIC = [
                             ),
                         ],
 
-                        "Cannot be determined (explain)": [
+                        "Cannot be determined": [
                             text(
-                                label="Explain",
+                                label="Comment",
                                 key=(
                                     "multifocal_pattern_"
                                     "cannot_be_determined"
@@ -1169,7 +1172,7 @@ SYNOPTIC = [
 
             "Cannot be determined": [
                 text(
-                    label="Explain",
+                    label="Comment",
                     key=(
                         "tumor_focality_"
                         "cannot_be_determined"
@@ -1213,7 +1216,7 @@ SYNOPTIC = [
                         ),
 
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key="dcis_extent_cannot_be_determined",
                         ),
                     },
@@ -1244,6 +1247,9 @@ SYNOPTIC = [
                             key="dcis_estimated_size_other",
                         ),
                     },
+                    child_value_options=[
+                        dcis_exact_size,
+                    ],
                     key="dcis_estimated_size",
                 ),
 
@@ -1301,7 +1307,7 @@ SYNOPTIC = [
                     ],
                     conditional_fields={
                         "Cannot be excluded": text(
-                            label="Explain",
+                            label="Comment",
                             key="dcis_necrosis_cannot_be_excluded",
                         ),
                     },
@@ -1347,8 +1353,7 @@ SYNOPTIC = [
             (
                 "Not applicable "
                 "(skin, nipple, and skeletal muscle are absent "
-                "or uninvolved, and it is not necessary to "
-                "document their presence)"
+                "or uninvolved)"
             ),
             (
                 "Applicable "
@@ -1380,7 +1385,7 @@ SYNOPTIC = [
                             key="nipple_status_other",
                         ),
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key="nipple_status_cannot_be_determined",
                         ),
                     },
@@ -1416,7 +1421,7 @@ SYNOPTIC = [
                             key="skin_status_other",
                         ),
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key="skin_status_cannot_be_determined",
                         ),
                     },
@@ -1433,7 +1438,7 @@ SYNOPTIC = [
                     ],
                     conditional_fields={
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key=(
                                 "macroscopic_skin_satellite_foci_"
                                 "cannot_be_determined"
@@ -1464,7 +1469,7 @@ SYNOPTIC = [
                             key="skeletal_muscle_other",
                         ),
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key=(
                                 "skeletal_muscle_"
                                 "cannot_be_determined"
@@ -1503,7 +1508,7 @@ SYNOPTIC = [
                 key="lymphovascular_invasion_other",
             ),
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "lymphovascular_invasion_"
                     "cannot_be_determined"
@@ -1511,14 +1516,6 @@ SYNOPTIC = [
             ),
         },
         key="lymphovascular_invasion",
-    ),
-
-    text(
-        label=(
-            "Lymphatic and / or Vascular "
-            "Invasion Comment"
-        ),
-        key="lymphovascular_invasion_comment",
     ),
 
     conditional_radio_multiple(
@@ -1542,7 +1539,7 @@ SYNOPTIC = [
                 key="dermal_lymphovascular_invasion_other",
             ),
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "dermal_lymphovascular_invasion_"
                     "cannot_be_determined"
@@ -1602,7 +1599,7 @@ SYNOPTIC = [
                 key="treatment_effect_breast_other",
             ),
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "treatment_effect_breast_"
                     "cannot_be_determined"
@@ -1638,7 +1635,7 @@ SYNOPTIC = [
         ],
         conditional_fields={
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "treatment_effect_lymph_nodes_"
                     "cannot_be_determined"
@@ -1796,7 +1793,7 @@ SYNOPTIC = [
             ),
 
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "final_margin_status_invasive_"
                     "cannot_be_determined"
@@ -1850,7 +1847,7 @@ SYNOPTIC = [
             ),
 
             "Cannot be determined": text(
-                label="Explain",
+                label="Comment",
                 key=(
                     "final_margin_status_dcis_"
                     "cannot_be_determined"
@@ -2003,7 +2000,7 @@ SYNOPTIC = [
                                     ),
 
                                     "Cannot be determined": text(
-                                        label="Explain",
+                                        label="Comment",
                                         key=(
                                             "extranodal_extension_"
                                             "cannot_be_determined"
@@ -2026,7 +2023,7 @@ SYNOPTIC = [
                         ),
 
                         "Cannot be determined": text(
-                            label="Explain",
+                            label="Comment",
                             key=(
                                 "regional_lymph_node_"
                                 "tumor_status_cannot_be_determined"
@@ -2079,6 +2076,7 @@ SYNOPTIC = [
                 key="distant_metastasis_cannot_be_determined",
             ),
         },
+        default="Not applicable ",
         exclusive_options=[
             "Not applicable ",
         ],
