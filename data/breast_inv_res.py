@@ -1244,7 +1244,7 @@ SYNOPTIC = [
                     },
                     child_value_options=[
                         dcis_exact_size,
-                    ]
+                    ],
                     key="dcis_estimated_size",
                 ),
 
