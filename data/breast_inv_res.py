@@ -687,8 +687,7 @@ def tumor_characteristics(
 
                     conditional_value(
                         label=(
-                            "Mitotic Rate "
-                            "(see Table 1 in Note E)"
+                            "Mitotic Rate"
                         ),
                         options=[
                             "Score 1",
@@ -919,7 +918,7 @@ def breast_biomarker_studies(
             options=[
                 ER_POSITIVE,
                 ER_LOW_POSITIVE,
-                "Negative",
+                "Negative, 0%",
                 "Cannot be determined",
             ],
             conditional_fields={
@@ -957,7 +956,7 @@ def breast_biomarker_studies(
             label="Progesterone Receptor (PgR) Status",
             options=[
                 "Positive",
-                "Negative",
+                "Negative, 0%",
                 "Cannot be determined",
             ],
             conditional_fields={
@@ -1017,16 +1016,16 @@ def breast_biomarker_studies(
         radio(
             label="Percentage of Ki-67 Positive Nuclei",
             options=[
-                "Favorable 1-10%",
-                "Borderline 11-20%",
-                "Unfavorable 21-30%",
-                "Unfavorable 31-40%",
-                "Unfavorable 41-50%",
-                "Unfavorable 51-60%",
-                "Unfavorable 61-70%",
-                "Unfavorable 71-80%",
-                "Unfavorable 81-90%",
-                "Unfavorable 91-100%",
+                "1-10%",
+                "11-20%",
+                "21-30%",
+                "31-40%",
+                "41-50%",
+                "51-60%",
+                "61-70%",
+                "71-80%",
+                "81-90%",
+                "91-100%",
             ],
             key=f"{key_prefix}_ki67_percentage",
         ),
@@ -1243,6 +1242,9 @@ SYNOPTIC = [
                             key="dcis_estimated_size_other",
                         ),
                     },
+                    child_value_options=[
+                        dcis_exact_size,
+                    ]
                     key="dcis_estimated_size",
                 ),
 
@@ -1346,8 +1348,7 @@ SYNOPTIC = [
             (
                 "Not applicable "
                 "(skin, nipple, and skeletal muscle are absent "
-                "or uninvolved, and it is not necessary to "
-                "document their presence)"
+                "or uninvolved)"
             ),
             (
                 "Applicable "
@@ -2070,6 +2071,7 @@ SYNOPTIC = [
                 key="distant_metastasis_cannot_be_determined",
             ),
         },
+        default="Not applicable "
         exclusive_options=[
             "Not applicable ",
         ],
